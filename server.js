@@ -2,6 +2,8 @@
 var express = require("express");
 var bodyParser = require("body-parser");
 var mongoose = require("mongoose");
+var exphbs = require('express-handlebars');
+
 // Requiring models
 
 // Scraping tools
@@ -19,7 +21,7 @@ app.use(bodyParser.urlencoded({
 }));
 
 // Make public a static dir
-// app.use(express.static("public"));
+app.use(express.static("public"));
 
 mongoose.connect("mongodb://localhost/news");
 var db = mongoose.connection;
@@ -34,5 +36,22 @@ db.once("open", function() {
   console.log("Mongoose connection successful.");
 });
 
+// Set Handlebars
+var exphbs = require("express-handlebars");
+
+app.engine("handlebars", exphbs({ defaultLayout: "main" }));
+app.set("view engine", "handlebars");
+
+
 // Routes
 // ==============
+app.get("/", function(req, res) {
+    res.render("index");
+  });
+
+
+
+//Run port
+app.listen(3000, function() {
+  console.log("App running on port 3000!");
+});
