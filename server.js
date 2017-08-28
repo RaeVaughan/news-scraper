@@ -5,6 +5,8 @@ var mongoose = require("mongoose");
 var exphbs = require('express-handlebars');
 
 // Requiring models
+var Note = require("./models/Note.js");
+var Article = require("./models/Article.js");
 
 // Scraping tools
 var request = require("request");
