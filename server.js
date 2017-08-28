@@ -49,6 +49,40 @@ app.get("/", function(req, res) {
     res.render("index");
   });
 
+app.get("/scrape", function(req, res){
+    //grab the body of the html with a request
+    request("http://www.huffingtonpost.com/", function(error, response, html) {
+        //load that html into cheerio for scraping
+        var $ = cheerio.load(html);
+
+        //save headlines
+        $("h2.card__headline").each(function(i, element) {
+
+            //empty object for article info to be pushed into
+            var result = {};
+
+            //add text and article link to the empty result object
+            result.title = $(this).text();
+            result.link = $(this).children().attr("href");
+
+            //console.log(result);
+
+            //create a new entry using Article model
+            var entry = new Article(result);
+
+            //save the entry to the database
+            entry.save(function(err, doc) {
+                if (err) {
+                    console.log(err);
+                } else {
+                    console.log(doc);
+                }
+            });
+        });
+    });
+    res.send("Articles found!");
+});
+
 
 
 //Run port
