@@ -48,8 +48,29 @@ app.set("view engine", "handlebars");
 // Routes
 // ==============
 app.get("/", function(req, res) {
-    res.render("index");
-  });
+
+
+ 
+    // Grab every doc in the Articles array
+    Article.find({}, function(error, doc) {
+        // Log any errors
+        if (error) {
+        console.log(error);
+        }
+        // Or send the doc to the browser as a json object
+        else {
+        //res.json(doc);
+           var hbsObject = {
+            articles: data
+        };
+        res.render("index", hbsObject)
+        }
+    });
+
+});
+
+//   app.get("/article", function(req, res) {
+// });
 
 app.get("/scrape", function(req, res){
     //grab the body of the html with a request
@@ -67,7 +88,7 @@ app.get("/scrape", function(req, res){
             result.title = $(this).text();
             result.link = $(this).children().attr("href");
 
-            //console.log(result);
+            console.log(result);
 
             //create a new entry using Article model
             var entry = new Article(result);

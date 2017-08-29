@@ -12,7 +12,12 @@
 
 				<a href="/scrape"><button type="button" class="btn btn-info">Get Articles</button></a>
 			</div>
-			<div id="articles"></div>
+				<div id="articles">
+					{{#each articles}}
+						{{this.title}}
+						{{this.link}}
+					{{/each}}
+				</div>
 			<div id="notes"></div>
 		</div>
 	</div>
